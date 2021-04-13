@@ -12,7 +12,7 @@ function App() {
       <Router>
         <div id="appContainer">
           <Switch>
-            <Route path="/" component={AboutPage} />
+            <Route exact path="/" component={AboutPage} />
             <Route path="/about" component={AboutPage} />
             <Route path="/notes" component={NotesPage} />
             <Route path="/todo" component={TodoPage} />
