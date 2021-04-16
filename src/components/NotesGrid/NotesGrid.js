@@ -2,8 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NotesGrid.css';
 import Note from '../../components/Note/Note'
+import Masonry from 'masonry-layout'
 
 class NotesGrid extends React.Component {
+  componentDidMount() {
+    var msnry = new Masonry('.notes-grid', {
+      itemSelector: '.note',
+      columnWidth: 400,
+      gutter: 10
+    });
+  }
 
   render() {
     return <div className="notes-grid">
