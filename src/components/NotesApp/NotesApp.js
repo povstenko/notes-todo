@@ -18,37 +18,81 @@ let data = [
     color: '#7afcff'
   },
   {
-    id: 2,
-    title: 'title2',
+    id: 12,
+    title: 'title12',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
     color: '#ff7eb9'
   },
   {
     id: 3,
-    title: 'title2',
+    title: 'title3',
     text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est',
     color: '#7afcff'
   },
   {
     id: 4,
-    title: 'title2',
+    title: 'title4',
     text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     color: '#feff9c'
   },
   {
     id: 5,
-    title: 'title2',
+    title: 'title5',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     color: '#fff740'
   },
+  {
+    id: 6,
+    title: 'title6',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    color: '#feff9c'
+  },
+  {
+    id: 7,
+    title: 'title7',
+    text: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    color: '#7afcff'
+  },
+  {
+    id: 8,
+    title: 'title8',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
+    color: '#ff65a3'
+  },
+  {
+    id: 9,
+    title: 'title9',
+    text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est',
+    color: '#7afcff'
+  },
+  {
+    id: 10,
+    title: 'title10',
+    text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    color: '#ff65a3'
+  },
+  {
+    id: 11,
+    title: 'title11',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    color: '#fff740'
+  }
 ]
 
-const NotesApp = () => (
-  <div className="notes-app">
-    <NoteEditor />
-    <NotesGrid />
-  </div>
-);
+class NotesApp extends React.Component {
+  constructor() {
+    super();
+    this.state = {notes: data};
+  }
+
+  render() {
+    return <div className="notes-app">
+      <NoteEditor />
+      <NotesGrid notes={data}/>
+    </div>
+  }
+
+}
 
 NotesApp.propTypes = {};
 
