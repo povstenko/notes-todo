@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './NotesGrid.css';
 import Note from '../../components/Note/Note'
 import Masonry from 'masonry-layout'

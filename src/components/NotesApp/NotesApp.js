@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './NotesApp.css';
 import NotesGrid from '../../components/NotesGrid/NotesGrid'
 import NoteEditor from '../../components/NoteEditor/NoteEditor';
@@ -82,13 +81,23 @@ let data = [
 class NotesApp extends React.Component {
   constructor() {
     super();
-    this.state = {notes: data};
+    this.state = { notes: data };
+    this.filterItems = this.filterItems.bind(this)
   }
+
+  filterItems(e) {
+    let filteredItems = this.state.notes.filter(function (item) {
+        return item.title.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+    })
+    console.log(filteredItems);
+    this.setState({ notes: filteredItems })
+}
 
   render() {
     return <div className="notes-app">
+      <input type="text" className="" placeholder="Search" onChange={this.filterItems} />
       <NoteEditor />
-      <NotesGrid notes={data}/>
+      <NotesGrid notes={this.state.notes} />
     </div>
   }
 
