@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Menu.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Menu = () => (
   <div className="menu">
@@ -9,9 +9,9 @@ const Menu = () => (
       <div className="nav-wrapper">
         <a href="#" className="brand-logo">Logo</a>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/notes">Notes</Link></li>
-          <li><Link to="/todo">Todo</Link></li>
+          <li><NavLink to="/about" activeClassName="active">About</NavLink></li>
+          <li><NavLink to="/notes" activeClassName="active">Notes</NavLink></li>
+          <li><NavLink to="/todo" activeClassName="active">Todo</NavLink></li>
         </ul>
       </div>
     </nav>
