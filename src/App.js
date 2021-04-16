@@ -5,11 +5,13 @@ import TodoPage from './pages/TodoPage/TodoPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 import './App.css';
+import Menu from './components/Menu/Menu';
 
 function App() {
   return (
     <div className="App">
       <Router>
+        <Menu />
         <div id="appContainer">
           <Switch>
             <Route exact path="/" component={AboutPage} />
