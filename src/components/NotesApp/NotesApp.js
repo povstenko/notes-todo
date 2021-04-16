@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NotesApp.css';
-import NotesApp from '../../components/NoteEditor/NoteEditor'
 import NotesGrid from '../../components/NotesGrid/NotesGrid'
 import NoteEditor from '../../components/NoteEditor/NoteEditor';
 
 const NotesApp = () => (
   <div className="notes-app">
-    <NoteEditor/>
+    <NoteEditor />
     <NotesGrid />
   </div>
 );
