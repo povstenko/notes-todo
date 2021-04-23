@@ -81,7 +81,7 @@ import NoteEditor from '../../components/NoteEditor/NoteEditor';
 class NotesApp extends React.Component {
   constructor() {
     super();
-    this.state = { notes: [] };
+    this.state = { notes: [], displayedNotes: [] };
     this.filterItems = this.filterItems.bind(this)
     this.handleNoteAdd = this.handleNoteAdd.bind(this)
     this.handleDeleteNote = this.handleDeleteNote.bind(this)
@@ -90,7 +90,7 @@ class NotesApp extends React.Component {
   componentDidMount() {
     let localNotes = JSON.parse(localStorage.getItem('notes'))
     if (localNotes) {
-      this.setState({ notes: localNotes })
+      this.setState({ notes: localNotes, displayedNotes: localNotes })
     }
   }
   componentDidUpdate() {
@@ -102,15 +102,15 @@ class NotesApp extends React.Component {
     let updated = this.state.notes.slice()
     updated.unshift(newNote)
 
-    this.setState({ notes: updated })
+    this.setState({ notes: updated, displayedNotes: updated })
   }
 
   handleDeleteNote(noteId) {
     let updated = this.state.notes.filter((note) => {
       return note.id !== noteId
     })
-    this.setState({notes: updated})
-    
+    this.setState({ notes: updated, displayedNotes: updated })
+
   }
 
   filterItems(e) {
@@ -118,14 +118,14 @@ class NotesApp extends React.Component {
       return item.title.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
     })
     console.log(filteredItems);
-    this.setState({ notes: filteredItems })
+    this.setState({ displayedNotes: filteredItems })
   }
 
   render() {
     return <div className="notes-app container">
       <input type="text" className="" placeholder="Search" onChange={this.filterItems} />
       <NoteEditor onNoteAdd={this.handleNoteAdd} />
-      <NotesGrid notes={this.state.notes} onNoteDelete={this.handleDeleteNote} />
+      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} />
     </div>
   }
 
