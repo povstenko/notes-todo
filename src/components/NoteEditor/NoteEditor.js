@@ -1,13 +1,43 @@
 import React from 'react';
 import './NoteEditor.css';
 
+class NoteColors extends React.Component{
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    let colors = ["grey", "green", "tomato", "yellow", "red", "brown"];
+    return (
+      <div className="colors-list">
+        {
+          colors.map((el, i) => {
+            return (
+              <div key={i} style={{ backgroundColor: el }}>
+                <input
+                  className="radio-custom"
+                  id={el}
+                  type="radio"
+                  name="color"
+                  onChange={(e) => this.props.onColorChanged(e, el)}
+                />
+                <label className="radio-custom-label" htmlFor={el} />
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
+};
+
 class NoteEditor extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { title: '', text: '' }
+    this.state = { title: '', text: '', color: '', checked: false }
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
+    this.hadleColorChange = this.hadleColorChange.bind(this)
     this.handleOnClick = this.handleOnClick.bind(this)
   }
 
@@ -17,13 +47,19 @@ class NoteEditor extends React.Component {
   handleTitleChange(e) {
     this.setState({ title: e.target.value })
   }
+  hadleColorChange(e, color) {
+    this.setState({
+      color: color,
+      checked: e.target.checked
+    })
+  }
 
   handleOnClick() {
     let newNote = {
       id: Date.now(),
       title: this.state.title,
       text: this.state.text,
-      color: '#feff9c'
+      color: this.state.color
     }
     this.props.onNoteAdd(newNote)
   }
@@ -41,6 +77,8 @@ class NoteEditor extends React.Component {
           <textarea onChange={this.handleTextChange} id="icon_prefix2" className="materialize-textarea"></textarea>
           <label htmlFor="icon_prefix2">Text</label>
         </div>
+
+        <NoteColors onColorChanged={this.hadleColorChange} />
 
         <div className="input-field col s2">
           <a onClick={this.handleOnClick} className="btn-floating btn-large waves-effect waves-light"><i className="material-icons">add</i></a>
