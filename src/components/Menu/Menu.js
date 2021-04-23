@@ -6,11 +6,11 @@ const Menu = () => (
   <div className="menu">
     <nav>
       <div className="nav-wrapper">
-        <span className="brand-logo">Logo</span>
+        <span className="brand-logo">NotesApp</span>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li><NavLink to="/about" activeClassName="active">About</NavLink></li>
-          <li><NavLink to="/notes" activeClassName="active">Notes</NavLink></li>
-          <li><NavLink to="/todo" activeClassName="active">Todo</NavLink></li>
+          <li><NavLink to="/about" activeClassName="activeMenu">About</NavLink></li>
+          <li><NavLink to="/notes" activeClassName="activeMenu">Notes</NavLink></li>
+          <li><NavLink to="/todo" activeClassName="activeMenu">Todo</NavLink></li>
         </ul>
       </div>
     </nav>
