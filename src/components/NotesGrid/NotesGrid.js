@@ -11,9 +11,9 @@ class NotesGrid extends React.Component {
       gutter: 4
     });
   }
+  
   componentDidUpdate(prevProps) {
-    if(this.props.notes.length !== prevProps.notes.length)
-    {
+    if (this.props.notes.length !== prevProps.notes.length) {
       this.msnry.reloadItems()
       this.msnry.layout()
     }
@@ -28,7 +28,8 @@ class NotesGrid extends React.Component {
             id={note.id}
             title={note.title}
             text={note.text}
-            color={note.color} />
+            color={note.color}
+            onDelete={this.props.onNoteDelete} />
         })
       }
     </div>

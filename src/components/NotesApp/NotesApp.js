@@ -84,23 +84,33 @@ class NotesApp extends React.Component {
     this.state = { notes: [] };
     this.filterItems = this.filterItems.bind(this)
     this.handleNoteAdd = this.handleNoteAdd.bind(this)
+    this.handleDeleteNote = this.handleDeleteNote.bind(this)
   }
 
   componentDidMount() {
     let localNotes = JSON.parse(localStorage.getItem('notes'))
-    if(localNotes){
-      this.setState({notes: localNotes})
+    if (localNotes) {
+      this.setState({ notes: localNotes })
     }
   }
   componentDidUpdate() {
     let notesStr = JSON.stringify(this.state.notes)
     localStorage.setItem('notes', notesStr)
   }
+
   handleNoteAdd(newNote) {
     let updated = this.state.notes.slice()
     updated.unshift(newNote)
 
     this.setState({ notes: updated })
+  }
+
+  handleDeleteNote(noteId) {
+    let updated = this.state.notes.filter((note) => {
+      return note.id !== noteId
+    })
+    this.setState({notes: updated})
+    
   }
 
   filterItems(e) {
@@ -115,7 +125,7 @@ class NotesApp extends React.Component {
     return <div className="notes-app container">
       <input type="text" className="" placeholder="Search" onChange={this.filterItems} />
       <NoteEditor onNoteAdd={this.handleNoteAdd} />
-      <NotesGrid notes={this.state.notes} />
+      <NotesGrid notes={this.state.notes} onNoteDelete={this.handleDeleteNote} />
     </div>
   }
 
