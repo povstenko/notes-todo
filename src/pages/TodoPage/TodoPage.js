@@ -1,9 +1,10 @@
 import React from 'react';
 import './TodoPage.css';
-var todoItems = [];
-todoItems.push({ index: 1, value: "learn react", done: false });
-todoItems.push({ index: 2, value: "Go shopping", done: true });
-todoItems.push({ index: 3, value: "buy flowers", done: true });
+// var todoItems = [];
+
+// todoItems.push({ index: 1, value: "learn react", done: false });
+// todoItems.push({ index: 2, value: "Go shopping", done: true });
+// todoItems.push({ index: 3, value: "buy flowers", done: true });
 
 class TodoList extends React.Component {
   render() {
@@ -97,9 +98,27 @@ class TodoApp extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.markTodoDone = this.markTodoDone.bind(this);
-    this.state = { todoItems: todoItems };
+    this.state = { todoItems: [] };
   }
+
+  componentDidMount() {
+    let localTodos = JSON.parse(localStorage.getItem('todoItems'))
+    if (localTodos) {
+      console.log("a")
+      this.setState({ todoItems: localTodos})
+    }
+    // this.setState({ todoItems: localTodos})
+    console.log(localTodos);
+
+    console.log(this.state.todoItems);
+  }
+  componentDidUpdate() {
+    let todosStr = JSON.stringify(this.state.todoItems)
+    localStorage.setItem('todoItems', todosStr)
+  }
+
   addItem(todoItem) {
+    let todoItems = this.state.todoItems;
     todoItems.unshift({
       index: todoItems.length + 1,
       value: todoItem.newItemValue,
@@ -108,10 +127,12 @@ class TodoApp extends React.Component {
     this.setState({ todoItems: todoItems });
   }
   removeItem(itemIndex) {
+    let todoItems = this.state.todoItems;
     todoItems.splice(itemIndex, 1);
     this.setState({ todoItems: todoItems });
   }
   markTodoDone(itemIndex) {
+    let todoItems = this.state.todoItems;
     var todo = todoItems[itemIndex];
     todoItems.splice(itemIndex, 1);
     todo.done = !todo.done;
@@ -122,7 +143,7 @@ class TodoApp extends React.Component {
     return (
       <div id="main">
         <TodoForm addItem={this.addItem} />
-        <TodoList items={this.props.initItems} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
+        <TodoList items={this.state.todoItems} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
       </div>
     );
   }
@@ -131,7 +152,7 @@ class TodoApp extends React.Component {
 const TodoPage = () => (
   <div className="TodoPage">
     <div className="container">
-      <TodoApp initItems={todoItems} />
+      <TodoApp />
     </div>
   </div>
 );
