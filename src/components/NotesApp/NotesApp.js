@@ -48,7 +48,7 @@ class NotesApp extends React.Component {
 
   render() {
     return <div className="notes-app container">
-      <div class="card-panel">
+      <div className="card-panel">
         <div className="input-field">
           <i className="material-icons prefix">search</i>
           <input id="icon_prefix" type="text" className="" onChange={this.filterItems} />
