@@ -34,8 +34,7 @@ class TodoListItem extends React.Component {
     this.props.markTodoDone(index);
   }
   render() {
-    var todoClass = this.props.item.done ?
-      "grey lighten-1" : "";
+    var todoClass = this.props.item.done ? "grey lighten-1" : "";
     var doneBtnClass = this.props.item.done ? "grey darken-3" : "green";
     return (
       <div className={"card " + todoClass}>
@@ -79,12 +78,12 @@ class TodoForm extends React.Component {
           <form ref="form" onSubmit={this.onSubmit} className="form-inline">
             <div className="row" style={{ margin: 0 }}>
               <div className="col"></div>
-                <div className="input-field col s11">
-                  <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
-                  <label htmlFor="inp">First Name</label>
-                </div>
-                <button type="submit" className="btn-floating btn-large"><i className="material-icons">add</i></button>
+              <div className="input-field col s11">
+                <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
+                <label htmlFor="inp">First Name</label>
               </div>
+              <button type="submit" className="btn-floating btn-large"><i className="material-icons">add</i></button>
+            </div>
           </form>
         </div>
       </div>
@@ -98,19 +97,21 @@ class TodoApp extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.markTodoDone = this.markTodoDone.bind(this);
-    this.state = { todoItems: [] };
+    this.setFilterAll = this.setFilterAll.bind(this);
+    this.setFilterNew = this.setFilterNew.bind(this);
+    this.setFilterCompleted = this.setFilterCompleted.bind(this);
+    this.filterTodos = this.filterTodos.bind(this);
+
+
+    this.state = { todoItems: [], filter: "all" };
   }
 
   componentDidMount() {
     let localTodos = JSON.parse(localStorage.getItem('todoItems'))
     if (localTodos) {
       console.log("a")
-      this.setState({ todoItems: localTodos})
+      this.setState({ todoItems: localTodos })
     }
-    // this.setState({ todoItems: localTodos})
-    console.log(localTodos);
-
-    console.log(this.state.todoItems);
   }
   componentDidUpdate() {
     let todosStr = JSON.stringify(this.state.todoItems)
@@ -139,10 +140,30 @@ class TodoApp extends React.Component {
     todo.done ? todoItems.push(todo) : todoItems.unshift(todo);
     this.setState({ todoItems: todoItems });
   }
+  filterTodos() {
+
+  }
+  setFilterAll() {
+    this.setState({ filter: "all"});
+  }
+  setFilterNew() {
+    this.setState({ filter: "new"});
+  }
+  setFilterCompleted() {
+    this.setState({ filter: "completed"});
+  }
+
   render() {
+    let activeAll = this.state.filter === "all" ? "blue-grey" : "grey darken-2";
+    let activeNew = this.state.filter === "new" ? "blue-grey" : "grey darken-2";
+    let activeCompleted = this.state.filter === "completed" ? "blue-grey" : "grey darken-2";
+
     return (
       <div id="main">
         <TodoForm addItem={this.addItem} />
+        <button class={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
+        <button class={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>New</button>
+        <button class={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
         <TodoList items={this.state.todoItems} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
       </div>
     );
