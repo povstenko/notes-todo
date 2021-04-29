@@ -103,14 +103,13 @@ class TodoApp extends React.Component {
     this.filterTodos = this.filterTodos.bind(this);
 
 
-    this.state = { todoItems: [], filter: "all" };
+    this.state = { todoItems: [], displayed: [], filter: "all" };
   }
 
   componentDidMount() {
     let localTodos = JSON.parse(localStorage.getItem('todoItems'))
     if (localTodos) {
-      console.log("a")
-      this.setState({ todoItems: localTodos })
+      this.setState({ todoItems: localTodos, displayed: localTodos })
     }
   }
   componentDidUpdate() {
@@ -140,17 +139,25 @@ class TodoApp extends React.Component {
     todo.done ? todoItems.push(todo) : todoItems.unshift(todo);
     this.setState({ todoItems: todoItems });
   }
-  filterTodos() {
-
+  filterTodos(filter) {
+    if(filter === "all"){
+      this.setState({ displayed: this.state.todoItems, filter: "all"})
+    } else if(filter === "new"){
+      let filteredItems = this.state.todoItems.filter(todo => todo.done === false)
+      this.setState({ displayed: filteredItems, filter: "new"})
+    } else if(filter === "completed") {
+      let filteredItems = this.state.todoItems.filter(todo => todo.done === true)
+      this.setState({ displayed: filteredItems, filter: "completed"})
+    }
   }
   setFilterAll() {
-    this.setState({ filter: "all"});
+    this.filterTodos("all");
   }
   setFilterNew() {
-    this.setState({ filter: "new"});
+    this.filterTodos("new");
   }
   setFilterCompleted() {
-    this.setState({ filter: "completed"});
+    this.filterTodos("completed");
   }
 
   render() {
@@ -161,10 +168,10 @@ class TodoApp extends React.Component {
     return (
       <div id="main">
         <TodoForm addItem={this.addItem} />
-        <button class={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
-        <button class={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>New</button>
-        <button class={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
-        <TodoList items={this.state.todoItems} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
+        <button className={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
+        <button className={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>New</button>
+        <button className={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
+        <TodoList items={this.state.displayed} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
       </div>
     );
   }
