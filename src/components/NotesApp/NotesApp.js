@@ -10,6 +10,7 @@ class NotesApp extends React.Component {
     this.filterItems = this.filterItems.bind(this)
     this.handleNoteAdd = this.handleNoteAdd.bind(this)
     this.handleDeleteNote = this.handleDeleteNote.bind(this)
+    this.handleTagClick = this.handleTagClick.bind(this)
   }
 
   componentDidMount() {
@@ -35,7 +36,12 @@ class NotesApp extends React.Component {
       return note.id !== noteId
     })
     this.setState({ notes: updated, displayedNotes: updated })
+  }
 
+  handleTagClick(tag) {
+    console.log(tag)
+    let filteredItems = this.state.notes
+    this.setState({ displayedNotes: filteredItems })
   }
 
   filterItems(e) {
@@ -59,7 +65,7 @@ class NotesApp extends React.Component {
 
       <NoteEditor onNoteAdd={this.handleNoteAdd} />
 
-      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} />
+      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} onNoteTag={this.handleTagClick}/>
     </div>
   }
 

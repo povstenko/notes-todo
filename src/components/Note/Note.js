@@ -14,8 +14,8 @@ const Note = (props) => (
         <p>{props.text}</p>
 
         {props.tags.map((tag) => {
-          return <div className="chip" style={{ marginTop: 30 }}>
-            {tag}
+          return <div key={tag.id} className="chip" style={{ marginTop: 30 }} onClick={() => { props.onTag(tag.id) }}>
+            {tag.text}
           </div>
         })}
 

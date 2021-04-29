@@ -35,14 +35,15 @@ class NoteEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { title: '', text: '', color: '#fbd249', checked: false, tags: [] }
+    this.state = { title: '', text: '', color: '#fbd249', checked: false, tag: '', tags: [] }
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
     this.hadleColorChange = this.hadleColorChange.bind(this)
     this.handleOnClick = this.handleOnClick.bind(this)
     this.handleTagChange = this.handleTagChange.bind(this)
-    this.addChip = this.addChip.bind(this)
     this.removeChip = this.removeChip.bind(this)
+    this.handleAddTag = this.handleAddTag.bind(this)
+
   }
 
   handleTextChange(e) {
@@ -58,16 +59,12 @@ class NoteEditor extends React.Component {
     })
   }
   handleTagChange(e) {
-    this.setState({ tags: e.target.value })
+    this.setState({ tag: e.target.value })
   }
-  addChip(value) {
-    const chips = this.state.tags.slice();
-    chips.push(value);
-    this.setState({ tags: chips  });
-  };
   removeChip(index) {
-    const chips = this.state.tags.slice();
-    chips.splice(index, 1);
+    let chips = this.state.tags.filter((tag) => {
+      return tag.id !== index
+    })
     this.setState({ tags: chips });
   };
 
@@ -80,6 +77,16 @@ class NoteEditor extends React.Component {
       tags: this.state.tags
     }
     this.props.onNoteAdd(newNote)
+  }
+  handleAddTag() {
+    let chips = this.state.tags.slice();
+    chips.push({
+      id: Date.now(),
+      text: this.state.tag
+    })
+
+    this.setState({ tags: chips })
+    console.log(chips);
   }
 
   render() {
@@ -97,12 +104,22 @@ class NoteEditor extends React.Component {
             <label htmlFor="icon_prefix2">Text</label>
           </div>
           <div className="input-field col s11">
-            <ReactChipInput
+            {/* <ReactChipInput
               classes="class1 class2"
               chips={this.state.tags}
               onSubmit={value => this.addChip(value)}
               onRemove={index => this.removeChip(index)}
-            />
+            /> */}
+            {
+              this.state.tags.map((tag) => {
+                return <div key={tag.id} className="chip" onClick={() => {this.removeChip(tag.id)}}>
+                  {tag.text}
+                  <i className="close material-icons">close</i>
+                </div>
+              })
+            }
+            <input type="text" onChange={this.handleTagChange} id="icon_prefix3"></input>
+            <a onClick={this.handleAddTag} className="btn waves-effect waves-light">Add Tag</a>
           </div>
           <div className="input-field col s11">
             <NoteColors onColorChanged={this.hadleColorChange} />

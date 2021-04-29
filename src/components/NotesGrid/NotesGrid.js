@@ -30,7 +30,8 @@ class NotesGrid extends React.Component {
             text={note.text}
             color={note.color}
             tags={note.tags}
-            onDelete={this.props.onNoteDelete} />
+            onDelete={this.props.onNoteDelete}
+            onTag={this.props.onNoteTag} />
         })
       }
     </div>

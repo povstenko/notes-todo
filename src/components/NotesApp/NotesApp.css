@@ -1,1 +1,7 @@
-.NotesApp {}
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+.align-items-center {
+  align-items: center !important;
+}
