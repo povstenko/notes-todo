@@ -12,6 +12,13 @@ const Note = (props) => (
       <div className="card-content">
         <span className="card-title">{props.title}</span>
         <p>{props.text}</p>
+
+        {props.tags.map((tag) => {
+          return <div className="chip" style={{ marginTop: 30 }}>
+            {tag}
+          </div>
+        })}
+
       </div>
     </div>
   </div>

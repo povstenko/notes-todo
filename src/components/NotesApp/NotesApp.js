@@ -40,9 +40,10 @@ class NotesApp extends React.Component {
 
   filterItems(e) {
     let filteredItems = this.state.notes.filter(function (item) {
-      return item.title.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+      let concat = item.title + " " + item.text
+      // console.log(concat)
+      return concat.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
     })
-    console.log(filteredItems);
     this.setState({ displayedNotes: filteredItems })
   }
 
