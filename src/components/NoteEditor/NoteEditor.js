@@ -43,7 +43,6 @@ class NoteEditor extends React.Component {
     this.handleTagChange = this.handleTagChange.bind(this)
     this.removeChip = this.removeChip.bind(this)
     this.handleAddTag = this.handleAddTag.bind(this)
-
   }
 
   handleTextChange(e) {
@@ -61,6 +60,7 @@ class NoteEditor extends React.Component {
   handleTagChange(e) {
     this.setState({ tag: e.target.value })
   }
+  
   removeChip(index) {
     let chips = this.state.tags.filter((tag) => {
       return tag.id !== index

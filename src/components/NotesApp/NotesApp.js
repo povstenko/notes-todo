@@ -40,7 +40,11 @@ class NotesApp extends React.Component {
 
   handleTagClick(tag) {
     console.log(tag)
-    let filteredItems = this.state.notes
+    let filteredItems = this.state.notes.filter(function (item) {
+      console.log(item.tags)
+      return item.tags.some(e => e.text == tag)
+      // return item.tags.id.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+    })
     this.setState({ displayedNotes: filteredItems })
   }
 
