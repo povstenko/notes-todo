@@ -6,10 +6,11 @@ import NoteEditor from '../../components/NoteEditor/NoteEditor';
 class NotesApp extends React.Component {
   constructor() {
     super();
-    this.state = { notes: [], displayedNotes: [] };
+    this.state = { notes: [], displayedNotes: [], isTagFilter: false };
     this.filterItems = this.filterItems.bind(this)
     this.handleNoteAdd = this.handleNoteAdd.bind(this)
     this.handleDeleteNote = this.handleDeleteNote.bind(this)
+    this.handleTagClick = this.handleTagClick.bind(this)
   }
 
   componentDidMount() {
@@ -35,14 +36,25 @@ class NotesApp extends React.Component {
       return note.id !== noteId
     })
     this.setState({ notes: updated, displayedNotes: updated })
+  }
 
+  handleTagClick(tag) {
+    if(this.state.isTagFilter == false) {
+      console.log(tag)
+      let filteredItems = this.state.notes.filter(function (item) {
+        return item.tags.some(e => e.text == tag)
+      })
+      this.setState({ displayedNotes: filteredItems, isTagFilter: true })
+    } else {
+      this.setState({ displayedNotes: this.state.notes, isTagFilter: false })
+    }
   }
 
   filterItems(e) {
     let filteredItems = this.state.notes.filter(function (item) {
-      return item.title.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+      let concat = item.title + " " + item.text
+      return concat.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
     })
-    console.log(filteredItems);
     this.setState({ displayedNotes: filteredItems })
   }
 
@@ -58,10 +70,9 @@ class NotesApp extends React.Component {
 
       <NoteEditor onNoteAdd={this.handleNoteAdd} />
 
-      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} />
+      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} onNoteTag={this.handleTagClick}/>
     </div>
   }
-
 }
 
 NotesApp.propTypes = {};

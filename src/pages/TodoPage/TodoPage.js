@@ -80,7 +80,7 @@ class TodoForm extends React.Component {
               <div className="col"></div>
               <div className="input-field col s11">
                 <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
-                <label htmlFor="inp">First Name</label>
+                <label htmlFor="inp">Add item to do</label>
               </div>
               <button type="submit" className="btn-floating btn-large"><i className="material-icons">add</i></button>
             </div>
