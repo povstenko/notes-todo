@@ -39,7 +39,7 @@ class NotesApp extends React.Component {
   }
 
   handleTagClick(tag) {
-    if(this.state.isTagFilter == false) {
+    if (this.state.isTagFilter == false) {
       console.log(tag)
       let filteredItems = this.state.notes.filter(function (item) {
         return item.tags.some(e => e.text == tag)
@@ -60,17 +60,15 @@ class NotesApp extends React.Component {
 
   render() {
     return <div className="notes-app container">
-      <div className="card-panel">
-        <div className="input-field">
-          <i className="material-icons prefix">search</i>
-          <input id="icon_prefix" type="text" className="" onChange={this.filterItems} />
-          <label htmlFor="icon_prefix">Search</label>
-        </div>
+      <div className="input-field">
+        <i className="material-icons prefix">search</i>
+        <input id="icon_prefix" type="text" className="" onChange={this.filterItems} style={{width: 300}}/>
+        <label htmlFor="icon_prefix">Search</label>
       </div>
 
       <NoteEditor onNoteAdd={this.handleNoteAdd} />
 
-      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} onNoteTag={this.handleTagClick}/>
+      <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleDeleteNote} onNoteTag={this.handleTagClick} />
     </div>
   }
 }
