@@ -1,10 +1,5 @@
 import React from 'react';
 import './TodoPage.css';
-// var todoItems = [];
-
-// todoItems.push({ index: 1, value: "learn react", done: false });
-// todoItems.push({ index: 2, value: "Go shopping", done: true });
-// todoItems.push({ index: 3, value: "buy flowers", done: true });
 
 class TodoList extends React.Component {
   render() {
@@ -34,18 +29,23 @@ class TodoListItem extends React.Component {
     this.props.markTodoDone(index);
   }
   render() {
-    var todoClass = this.props.item.done ? "grey lighten-1" : "";
+    var todoClass = this.props.item.done ? "light-green lighten-3" : "";
+    var textClass = this.props.item.done ? "line" : "";
     var doneBtnClass = this.props.item.done ? "grey darken-3" : "green";
     return (
       <div className={"card " + todoClass}>
         <div className="card-content">
           <div className="row" style={{ margin: 0 }}>
+            <div className="col left">
+              <button type="button" className={"waves-effect waves-light btn " + doneBtnClass} aria-hidden="true" onClick={this.onClickDone}>
+                <i className="material-icons">{this.props.item.done ? "close" : "check"}</i>
+              </button>
+            </div>
             <div className="col">
-              <span className="card-title">{this.props.item.value}</span>
+              <span className={"card-title " + textClass}>{this.props.item.value}</span>
             </div>
             <div className="col right">
-              <button type="button" className={"waves-effect waves-light btn " + doneBtnClass} aria-hidden="true" onClick={this.onClickDone}>{this.props.item.done ? "Undone" : "Done"}</button>
-              <button type="button" className="waves-effect waves-light red btn" onClick={this.onClickClose}>Remove</button>
+              <button type="button" className="waves-effect waves-light red btn" onClick={this.onClickClose}><i className="material-icons">delete</i></button>
             </div>
           </div>
         </div>
@@ -73,20 +73,16 @@ class TodoForm extends React.Component {
   }
   render() {
     return (
-      <div className="card">
-        <div className="card-content">
-          <form ref="form" onSubmit={this.onSubmit} className="form-inline">
-            <div className="row" style={{ margin: 0 }}>
-              <div className="col"></div>
-              <div className="input-field col s11">
-                <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
-                <label htmlFor="inp">Add item to do</label>
-              </div>
-              <button type="submit" className="btn-floating btn-large"><i className="material-icons">add</i></button>
-            </div>
-          </form>
+      <form ref="form" onSubmit={this.onSubmit} className="form-inline" style={{ margin: 10 }}>
+        <div className="row" style={{ margin: 0 }}>
+          <div className="input-field col s10">
+            <i className="material-icons prefix">list</i>
+            <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
+            <label htmlFor="inp">Add Todo item</label>
+          </div>
+          <button type="submit" className="btn-floating btn-large deep-purple darken-1"><i className="material-icons">add</i></button>
         </div>
-      </div>
+      </form>
     );
   }
 }
@@ -140,14 +136,14 @@ class TodoApp extends React.Component {
     this.setState({ todoItems: todoItems });
   }
   filterTodos(filter) {
-    if(filter === "all"){
-      this.setState({ displayed: this.state.todoItems, filter: "all"})
-    } else if(filter === "new"){
+    if (filter === "all") {
+      this.setState({ displayed: this.state.todoItems, filter: "all" })
+    } else if (filter === "new") {
       let filteredItems = this.state.todoItems.filter(todo => todo.done === false)
-      this.setState({ displayed: filteredItems, filter: "new"})
-    } else if(filter === "completed") {
+      this.setState({ displayed: filteredItems, filter: "new" })
+    } else if (filter === "completed") {
       let filteredItems = this.state.todoItems.filter(todo => todo.done === true)
-      this.setState({ displayed: filteredItems, filter: "completed"})
+      this.setState({ displayed: filteredItems, filter: "completed" })
     }
   }
   setFilterAll() {
@@ -161,16 +157,19 @@ class TodoApp extends React.Component {
   }
 
   render() {
-    let activeAll = this.state.filter === "all" ? "blue-grey" : "grey darken-2";
-    let activeNew = this.state.filter === "new" ? "blue-grey" : "grey darken-2";
-    let activeCompleted = this.state.filter === "completed" ? "blue-grey" : "grey darken-2";
+    let activeAll = this.state.filter === "all" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
+    let activeNew = this.state.filter === "new" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
+    let activeCompleted = this.state.filter === "completed" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
 
     return (
       <div id="main">
         <TodoForm addItem={this.addItem} />
-        <button className={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
-        <button className={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>New</button>
-        <button className={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
+        <div className="center-align">
+          <button className={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
+          <button className={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>new</button>
+          <button className={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
+        </div>
+
         <TodoList items={this.state.displayed} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
       </div>
     );
