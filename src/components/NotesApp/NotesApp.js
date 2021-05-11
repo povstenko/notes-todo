@@ -52,13 +52,13 @@ const reducer = function (state = initialState, action) {
         let filteredItemsTag = state.notes.filter(function (item) {
           return item.tags.some(e => e.text == action.payload)
         })
-        return { 
+        return {
           ...state,
           displayedNotes: filteredItemsTag,
           isTagFilter: true
         }
       } else {
-        return { 
+        return {
           ...state,
           displayedNotes: state.notes,
           isTagFilter: false
@@ -70,31 +70,6 @@ const reducer = function (state = initialState, action) {
 };
 let store = createStore(reducer);
 
-const addNote = (note) => {
-  return {
-    type: 'ADD_NOTE',
-    payload: note
-  };
-};
-const deleteNote = (noteId) => {
-  return {
-    type: 'DELETE_NOTE',
-    payload: noteId
-  };
-};
-const filterNotes = (e) => {
-  return {
-    type: 'FILTER_NOTES',
-    payload: e
-  };
-};
-const filterNotesTag = (tag) => {
-  return {
-    type: 'FILTER_NOTES_TAG',
-    payload: tag
-  };
-};
-
 function mapStateToProps(state) {
   return {
     notes: state.notes,
@@ -104,33 +79,41 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    onNoteAdd: newNote =>  dispatch(addNote(newNote)),
-    onNoteDelete: noteId => dispatch(deleteNote(noteId)),
-    onSearch: e => dispatch(filterNotes(e)),
-    onTag: tag => dispatch(filterNotesTag(tag))
+    onNoteAdd: newNote => dispatch({
+      type: 'ADD_NOTE',
+      payload: newNote
+    }),
+    onNoteDelete: noteId => dispatch({
+      type: 'DELETE_NOTE',
+      payload: noteId
+    }),
+    onSearch: e => dispatch({
+      type: 'FILTER_NOTES',
+      payload: e
+    }),
+    onTag: tag => dispatch({
+      type: 'FILTER_NOTES_TAG',
+      payload: tag
+    })
   }
 }
 
 export const Component = ({ displayedNotes, onNoteAdd, onNoteDelete, onSearch, onTag }) => (
   <div>
     <div className="input-field">
-        <i className="material-icons prefix">search</i>
-        <input id="icon_prefix" type="text" className="" onChange={(e) => onSearch(e)} style={{ width: 300 }} />
-        <label htmlFor="icon_prefix">Search</label>
-      </div>
-    < NoteEditor onNoteAdd={onNoteAdd} />
+      <i className="material-icons prefix">search</i>
+      <input id="icon_prefix" type="text" className="" onChange={(e) => onSearch(e)} style={{ width: 300 }} />
+      <label htmlFor="icon_prefix">Search</label>
+    </div>
+
+    <NoteEditor onNoteAdd={onNoteAdd} />
 
     <NotesGrid notes={displayedNotes} onNoteDelete={onNoteDelete} onNoteTag={onTag} />
-
   </div>
 )
 export const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 class NotesApp extends React.Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return <div className="notes-app container">
       <Provider store={store}>
