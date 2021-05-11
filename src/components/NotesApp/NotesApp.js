@@ -13,16 +13,6 @@ const initialState = {
 };
 const reducer = function (state = initialState, action) {
   switch (action.type) {
-    case "LOAD_NOTES":
-      return {
-        ...state
-      }
-    case "UPDATE_NOTES":
-      // let notesStr = JSON.stringify(state.notes)
-      // localStorage.setItem('notes', notesStr)
-      return {
-        ...state
-      }
     case "ADD_NOTE":
       let updatedAdd = state.notes.slice()
       updatedAdd.unshift(action.payload)
@@ -48,12 +38,31 @@ const reducer = function (state = initialState, action) {
         displayedNotes: updatedDel
       }
     case "FILTER_NOTES":
+      let filteredItems = state.notes.filter(function (item) {
+        let concat = item.title + " " + item.text
+        return concat.toLowerCase().search(action.payload.target.value.toLowerCase()) !== -1;
+      })
       return {
-        ...state
+        ...state,
+        displayedNotes: filteredItems
       }
     case "FILTER_NOTES_TAG":
-      return { 
-        ...state
+      if (state.isTagFilter == false) {
+        console.log(action.payload)
+        let filteredItemsTag = state.notes.filter(function (item) {
+          return item.tags.some(e => e.text == action.payload)
+        })
+        return { 
+          ...state,
+          displayedNotes: filteredItemsTag,
+          isTagFilter: true
+        }
+      } else {
+        return { 
+          ...state,
+          displayedNotes: state.notes,
+          isTagFilter: false
+        }
       }
     default:
       return state;
@@ -73,6 +82,18 @@ const deleteNote = (noteId) => {
     payload: noteId
   };
 };
+const filterNotes = (e) => {
+  return {
+    type: 'FILTER_NOTES',
+    payload: e
+  };
+};
+const filterNotesTag = (tag) => {
+  return {
+    type: 'FILTER_NOTES_TAG',
+    payload: tag
+  };
+};
 
 function mapStateToProps(state) {
   return {
@@ -85,17 +106,18 @@ function mapDispatchToProps(dispatch) {
   return {
     onNoteAdd: newNote =>  dispatch(addNote(newNote)),
     onNoteDelete: noteId => dispatch(deleteNote(noteId)),
-    onTag: () => { dispatch({ type: 'FILTER_NOTES_TAG' }) }
+    onSearch: e => dispatch(filterNotes(e)),
+    onTag: tag => dispatch(filterNotesTag(tag))
   }
 }
 
-export const Component = ({ displayedNotes, onNoteAdd, onNoteDelete, onTag }) => (
+export const Component = ({ displayedNotes, onNoteAdd, onNoteDelete, onSearch, onTag }) => (
   <div>
-    {/* <div className="input-field">
+    <div className="input-field">
         <i className="material-icons prefix">search</i>
-        <input id="icon_prefix" type="text" className="" onChange={this.filterItems} style={{ width: 300 }} />
+        <input id="icon_prefix" type="text" className="" onChange={(e) => onSearch(e)} style={{ width: 300 }} />
         <label htmlFor="icon_prefix">Search</label>
-      </div> */}
+      </div>
     < NoteEditor onNoteAdd={onNoteAdd} />
 
     <NotesGrid notes={displayedNotes} onNoteDelete={onNoteDelete} onNoteTag={onTag} />
@@ -107,55 +129,6 @@ export const Container = connect(mapStateToProps, mapDispatchToProps)(Component)
 class NotesApp extends React.Component {
   constructor() {
     super();
-    this.state = { notes: [], displayedNotes: [], isTagFilter: false };
-    this.filterItems = this.filterItems.bind(this)
-    this.handleNoteAdd = this.handleNoteAdd.bind(this)
-    this.handleDeleteNote = this.handleDeleteNote.bind(this)
-    this.handleTagClick = this.handleTagClick.bind(this)
-  }
-
-  componentDidMount() {
-    let localNotes = JSON.parse(localStorage.getItem('notes'))
-    if (localNotes) {
-      this.setState({ notes: localNotes, displayedNotes: localNotes })
-    }
-  }
-  componentDidUpdate() {
-    // store.dispatch({ type: 'UPDATE_NOTES' })
-  }
-
-  handleNoteAdd(newNote) {
-    // let updated = this.state.notes.slice()
-    // updated.unshift(newNote)
-
-    // this.setState({ notes: updated, displayedNotes: updated })
-  }
-
-  handleDeleteNote(noteId) {
-    let updated = this.state.notes.filter((note) => {
-      return note.id !== noteId
-    })
-    this.setState({ notes: updated, displayedNotes: updated })
-  }
-
-  handleTagClick(tag) {
-    if (this.state.isTagFilter == false) {
-      console.log(tag)
-      let filteredItems = this.state.notes.filter(function (item) {
-        return item.tags.some(e => e.text == tag)
-      })
-      this.setState({ displayedNotes: filteredItems, isTagFilter: true })
-    } else {
-      this.setState({ displayedNotes: this.state.notes, isTagFilter: false })
-    }
-  }
-
-  filterItems(e) {
-    let filteredItems = this.state.notes.filter(function (item) {
-      let concat = item.title + " " + item.text
-      return concat.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
-    })
-    this.setState({ displayedNotes: filteredItems })
   }
 
   render() {
