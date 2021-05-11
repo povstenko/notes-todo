@@ -1,6 +1,5 @@
 import React from 'react';
 import './NoteEditor.css';
-import ReactChipInput from "react-chip-input";
 
 class NoteColors extends React.Component {
   constructor(props) {
