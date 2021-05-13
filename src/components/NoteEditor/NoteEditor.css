@@ -3,9 +3,9 @@
 }
 
 .colors-list > div {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
     float: left;
     margin-right: 5px;
 }
@@ -40,11 +40,21 @@
     position: absolute;
     width: 1px;
     height: 4px;
-    border: solid black;
+    border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    top: 10px;
-    left: 7px;
+    top: 7px;
+    left: 1px;
+}
+.input-field [type=text]{
+    color:white !important;
+}
+textarea{
+    color:white !important;
+}
+
+.card, .card-panel {
+    border-radius: 8px;
 }

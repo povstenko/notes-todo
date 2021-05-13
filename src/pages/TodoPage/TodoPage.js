@@ -29,23 +29,17 @@ class TodoListItem extends React.Component {
     this.props.markTodoDone(index);
   }
   render() {
-    var todoClass = this.props.item.done ? "light-green lighten-3" : "";
+    var todoClass = this.props.item.done ? "todo-completed" : "grey darken-3";
     var textClass = this.props.item.done ? "line" : "";
-    var doneBtnClass = this.props.item.done ? "grey darken-3" : "green";
     return (
-      <div className={"card " + todoClass}>
+      <div className={"card hoverable " + todoClass} onClick={this.onClickDone}>
         <div className="card-content">
           <div className="row" style={{ margin: 0 }}>
-            <div className="col left">
-              <button type="button" className={"waves-effect waves-light btn " + doneBtnClass} aria-hidden="true" onClick={this.onClickDone}>
-                <i className="material-icons">{this.props.item.done ? "close" : "check"}</i>
-              </button>
-            </div>
-            <div className="col">
+            <div className="col s10">
               <span className={"card-title " + textClass}>{this.props.item.value}</span>
             </div>
             <div className="col right">
-              <button type="button" className="waves-effect waves-light red btn" onClick={this.onClickClose}><i className="material-icons">delete</i></button>
+              <button type="button" className="waves-effect waves-light red btn trash-btn  " onClick={this.onClickClose}><i className="material-icons">close</i></button>
             </div>
           </div>
         </div>
@@ -73,16 +67,24 @@ class TodoForm extends React.Component {
   }
   render() {
     return (
-      <form ref="form" onSubmit={this.onSubmit} className="form-inline" style={{ margin: 10 }}>
-        <div className="row" style={{ margin: 0 }}>
-          <div className="input-field col s10">
-            <i className="material-icons prefix">list</i>
-            <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
-            <label htmlFor="inp">Add Todo item</label>
-          </div>
-          <button type="submit" className="btn-floating btn-large deep-purple darken-1"><i className="material-icons">add</i></button>
+      <div className="card-panel grey darken-3" style={{ paddingBottom: 0, paddingTop: 0 }}>
+        <div className="row" style={{ marginBottom: 0 }}>
+          <form ref="form" onSubmit={this.onSubmit} className="form-inline" style={{ margin: 10 }}>
+            <div className="row" style={{ margin: 0 }}>
+              <div className="input-field col s11">
+                <i className="material-icons prefix">list</i>
+                <input type="text" id="inp" className="materialize-textarea" ref="itemName"></input>
+                <label htmlFor="inp">To do...</label>
+              </div>
+              <div className="col s1">
+                <button type="submit" className="btn-floating btn-large waves-effect waves-light grey darken-4" style={{ width: 40, height: 40, marginTop:20 }}>
+                  <i className="material-icons" style={{ lineHeight: 0 }}>add</i>
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     );
   }
 }
@@ -157,20 +159,37 @@ class TodoApp extends React.Component {
   }
 
   render() {
-    let activeAll = this.state.filter === "all" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
-    let activeNew = this.state.filter === "new" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
-    let activeCompleted = this.state.filter === "completed" ? "deep-purple lighten-3 black-text" : "deep-purple darken-1";
+    let activeAll = this.state.filter === "all" ? "grey darken-3" : "grey darken-4";
+    let activeNew = this.state.filter === "new" ? "grey darken-3" : "grey darken-4";
+    let activeCompleted = this.state.filter === "completed" ? "grey darken-3" : "grey darken-4";
 
     return (
       <div id="main">
-        <TodoForm addItem={this.addItem} />
-        <div className="center-align">
-          <button className={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll}>All</button>
-          <button className={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew}>new</button>
-          <button className={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted}>Completed</button>
+        <div className="row">
+          <div className="col s2" style={{ padding: 10 }}>
+            <div>
+              <button className={"waves-effect waves-light btn " + activeAll} onClick={this.setFilterAll} style={{ width: '100%' }}>All</button>
+            </div>
+            <div>
+              <button className={"waves-effect waves-light btn " + activeNew} onClick={this.setFilterNew} style={{ width: '100%' }}>new</button>
+            </div>
+            <div>
+              <button className={"waves-effect waves-light btn " + activeCompleted} onClick={this.setFilterCompleted} style={{ width: '100%' }}>Completed</button>
+            </div>
+          </div>
+          <div className="col s10">
+            <div className="row">
+              <div className="col offset-s3 w-50" style={{ width: '700px' }}>
+                <TodoForm addItem={this.addItem} />
+              </div>
+            </div>
+            <div className="row">
+              <div className="container">
+                <TodoList items={this.state.displayed} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
+              </div>
+            </div>
+          </div>
         </div>
-
-        <TodoList items={this.state.displayed} removeItem={this.removeItem} markTodoDone={this.markTodoDone} />
       </div>
     );
   }
@@ -178,7 +197,7 @@ class TodoApp extends React.Component {
 
 const TodoPage = () => (
   <div className="TodoPage">
-    <div className="container">
+    <div className="">
       <TodoApp />
     </div>
   </div>

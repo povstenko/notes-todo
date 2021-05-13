@@ -9,10 +9,22 @@ import Menu from './components/Menu/Menu';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{
+      backgroundColor: '#202124',
+      width: '100',
+      height: '100%',
+      color: 'white'
+    }}>
       <Router>
         <Menu />
-        <div id="appContainer">
+        <Switch>
+            <Route exact path="/" component={AboutPage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/notes" component={NotesPage} />
+            <Route path="/todo" component={TodoPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        {/* <div id="appContainer">
           <Switch>
             <Route exact path="/" component={AboutPage} />
             <Route path="/about" component={AboutPage} />
@@ -20,7 +32,7 @@ function App() {
             <Route path="/todo" component={TodoPage} />
             <Route component={NotFoundPage} />
           </Switch>
-        </div>
+        </div> */}
       </Router>
     </div>
   );

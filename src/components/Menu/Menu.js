@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom';
 const Menu = () => (
   <div className="menu">
     <nav>
-      <div className="nav-wrapper deep-purple darken-1">
-        <span className="brand-logo">Notes Todo App</span>
+      <div className="nav-wrapper grey darken-3">
+        <span className="brand-logo">Keep</span>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
           <li><NavLink to="/about" activeClassName="activeMenu">About</NavLink></li>
           <li><NavLink to="/notes" activeClassName="activeMenu">Notes</NavLink></li>

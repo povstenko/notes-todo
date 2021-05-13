@@ -9,7 +9,13 @@ import { Provider, connect } from 'react-redux';
 const initialState = {
   notes: ((JSON.parse(localStorage.getItem('notes'))) ? JSON.parse(localStorage.getItem('notes')) : []),
   displayedNotes: ((JSON.parse(localStorage.getItem('notes'))) ? JSON.parse(localStorage.getItem('notes')) : []),
-  isTagFilter: false
+  isTagFilter: false,
+  filteredTag: '',
+  tags: ((JSON.parse(localStorage.getItem('notes'))) ?
+    JSON.parse(localStorage.getItem('notes')
+    ).filter((el) => el.tags[0] !== undefined
+    ).map((note) => note.tags[0].text
+    ).filter((value, index, self) => self.indexOf(value) === index) : [])
 };
 const reducer = function (state = initialState, action) {
   switch (action.type) {
@@ -17,10 +23,17 @@ const reducer = function (state = initialState, action) {
       let updatedAdd = state.notes.slice()
       updatedAdd.unshift(action.payload)
 
+      let tagsNames = ((JSON.parse(localStorage.getItem('notes'))) ?
+      JSON.parse(localStorage.getItem('notes')
+      ).filter((el) => el.tags[0] !== undefined
+      ).map((note) => note.tags[0].text
+      ).filter((value, index, self) => self.indexOf(value) === index) : [])
+
       let notesStrAdd = JSON.stringify(updatedAdd)
       localStorage.setItem('notes', notesStrAdd)
       return {
         ...state,
+        tags: tagsNames,
         notes: updatedAdd,
         displayedNotes: updatedAdd
       }
@@ -54,12 +67,14 @@ const reducer = function (state = initialState, action) {
         })
         return {
           ...state,
+          filteredTag: action.payload,
           displayedNotes: filteredItemsTag,
           isTagFilter: true
         }
       } else {
         return {
           ...state,
+          filteredTag: '',
           displayedNotes: state.notes,
           isTagFilter: false
         }
@@ -73,8 +88,10 @@ let store = createStore(reducer);
 function mapStateToProps(state) {
   return {
     notes: state.notes,
+    tags: state.tags,
     displayedNotes: state.displayedNotes,
-    isTagFilter: state.isTagFilter
+    isTagFilter: state.isTagFilter,
+    filteredTag: state.filteredTag
   }
 }
 function mapDispatchToProps(dispatch) {
@@ -98,24 +115,44 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export const Component = ({ displayedNotes, onNoteAdd, onNoteDelete, onSearch, onTag }) => (
+export const Component = ({ displayedNotes, tags, filteredTag, onNoteAdd, onNoteDelete, onSearch, onTag }) => (
   <div>
-    <div className="input-field">
-      <i className="material-icons prefix">search</i>
-      <input id="icon_prefix" type="text" className="" onChange={(e) => onSearch(e)} style={{ width: 300 }} />
-      <label htmlFor="icon_prefix">Search</label>
+    <div className="row">
+      <div className="col s2" >
+        <div className="input-field">
+          <i className="material-icons prefix">search</i>
+          <input id="icon_prefix" type="text" className="" onChange={(e) => onSearch(e)} />
+          <label htmlFor="icon_prefix">Search</label>
+        </div>
+        {
+        console.log(tags)
+        // console.log(filteredTag)
+        }
+
+        {tags.map((tag) => (
+          <div>
+              <button className={"waves-effect waves-light btn " + (filteredTag === tag ? "grey darken-3" : "grey darken-4")} onClick={() => { onTag(tag)}} style={{ width: '100%' }}>{tag}</button>
+          </div>
+        ))}
+      </div>
+      <div className="col s10">
+        <div className="row">
+          <div className="col offset-s3 w-50" style={{ width: '700px' }}>
+            <NoteEditor onNoteAdd={onNoteAdd} />
+          </div>
+        </div>
+        <div className="row">
+          <NotesGrid notes={displayedNotes} onNoteDelete={onNoteDelete} onNoteTag={onTag} />
+        </div>
+      </div>
     </div>
-
-    <NoteEditor onNoteAdd={onNoteAdd} />
-
-    <NotesGrid notes={displayedNotes} onNoteDelete={onNoteDelete} onNoteTag={onTag} />
   </div>
 )
 export const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 class NotesApp extends React.Component {
   render() {
-    return <div className="notes-app container">
+    return <div className="notes-app">
       <Provider store={store}>
         <Container />
       </Provider>
